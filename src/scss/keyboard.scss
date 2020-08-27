@@ -1,0 +1,97 @@
+.keyboard {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 2.25rem;
+  row-gap: 1rem;
+  column-gap: 0.5rem;
+  transition-property: opacity;
+  transition-duration: 2s;
+  transition-timing-function: ease;
+  flex: 0;
+  opacity: 1;
+  height: max-content;
+  &.help {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+  }
+  & button {
+    height: 100%;
+  }
+}
+
+.keyboard button,
+.header button {
+  color: var(--color-bg);
+  user-select: none;
+  margin-bottom: 0.75rem;
+  border: 0;
+  border-radius: 0.25rem;
+  top: 0;
+  background-color: var(--color-button);
+  box-shadow: 0 0.5rem 0 0 var(--color-button-shadow);
+  cursor: pointer;
+  position: relative;
+  &:focus {
+    outline: none;
+  }
+
+  & .badge {
+    position: absolute;
+    right: -0.2rem;
+    top: -0.2rem;
+    background-color: var(--color-button);
+    box-shadow: -1px 1px 3px 1px var(--color-button-shadow);
+    color: var(--color);
+    border-radius: 0.7rem;
+    height: 1.4rem;
+    min-width: 1.4rem;
+    font-size: 0.8rem;
+    line-height: 1.4rem;
+    z-index: 1;
+    vertical-align: middle;
+    text-align: center;    
+  }
+  &:active,
+  &.active {
+    outline: none;
+    position: relative;
+    top: 0.25rem;
+    transition: all 0.1s;
+    box-shadow: 0 0.25rem 0 0 var(--color-button-shadow);
+  }
+  &.enter {
+    grid-column-start: -3;
+    grid-column-end: -1;
+  }
+
+  &.empty {
+    background: black;
+    opacity: 0.2;
+    box-shadow: none;
+    color: black;
+    margin-top: 0.5rem;
+  }
+
+  @mixin button($background, $shadow) {
+    background-color: $background;
+    box-shadow: 0 0.5rem 0 0 $shadow;
+    &:active,
+    &.active {
+      box-shadow: 0 0.25rem 0 0 $shadow;
+    }
+    & .badge {
+      background-color: $background;
+      box-shadow: -1px 1px 3px 1px $shadow;
+    }
+  }
+
+  $colors: red, orange, yellow, teal, navy, green;
+
+  @each $color in $colors {
+    &.#{$color} {
+      @include button(var(--color-#{$color}), var(--color-#{$color}-shadow));
+    }
+  }
+}
