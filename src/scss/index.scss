@@ -26,6 +26,7 @@
   --color-green-shadow: #3d8021;
   --color-navy: #6b94b4;
   --color-navy-shadow: #3c5a74;
+  --font: monospace;
 }
 
 * {
@@ -62,7 +63,7 @@ body {
 
 button,
 div {
-  font-family: monospace;
+  font-family: var(--font);
   text-align: center;
   font-size: 19px;
   -webkit-tap-highlight-color: transparent;

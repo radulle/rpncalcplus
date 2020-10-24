@@ -343,7 +343,7 @@ export default function useStack(
     },
     {
       kbd: "P",
-      title: "𝜋",
+      title: "π",
       color: "navy",
       onClick: handleOperation("pi", 0),
       main: false,
