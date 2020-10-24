@@ -1,14 +1,16 @@
-import * as React from "react";
-import SplitNum from "./SplitNum";
+import * as React from "react"
+import SplitNum from "./SplitNum"
 
-const names = [9, 8, 7, 6, 5, 4, "z", "y", "x"];
+const names = [9, 8, 7, 6, 5, 4, "z", "y", "x"]
 
 function Item({ num }: { num: string }) {
-  const splitNum = new SplitNum(num);
-  const { mantisa, exponent } = splitNum.formatted;
+  const splitNum = new SplitNum(num)
+  const { mantisa, exponent } = splitNum.formatted
   const handleCopy = () => {
-    navigator.clipboard.writeText(mantisa + (!!exponent ? "e" + exponent : ""));
-  };
+    navigator?.clipboard?.writeText?.(
+      mantisa + (!!exponent ? "e" + exponent : "")
+    )
+  }
   return (
     <button className="result" onClick={handleCopy}>
       <div className="mantisa">{mantisa}</div>
@@ -21,15 +23,15 @@ function Item({ num }: { num: string }) {
         )}
       </div>
     </button>
-  );
+  )
 }
 
 export default function Stack({
   commands,
-  stack
+  stack,
 }: {
-  commands: Array<string>;
-  stack: Array<string>;
+  commands: Array<string>
+  stack: Array<string>
 }) {
   return (
     <>
@@ -46,5 +48,5 @@ export default function Stack({
         </div>
       )}
     </>
-  );
+  )
 }
