@@ -27,6 +27,7 @@ export default function usePWA(
         }
       })
     }
+
     function beforeinstallprompt(evt: Event) {
       evt.preventDefault()
       deferredPrompt = evt as BeforeInstallPromptEvent
@@ -35,6 +36,7 @@ export default function usePWA(
         action: `Install RPNcalc+ for easier access.`,
       })()
     }
+
     function appinstalled() {
       handleNote({
         action: "You can now access the app directly from homescreen.",

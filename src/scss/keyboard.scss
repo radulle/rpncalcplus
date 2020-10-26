@@ -87,7 +87,7 @@
     }
   }
 
-  $colors: red, orange, yellow, teal, navy, green;
+  $colors: 'red', 'orange', 'yellow', 'teal', 'navy', 'green';
 
   @each $color in $colors {
     &.#{$color} {
