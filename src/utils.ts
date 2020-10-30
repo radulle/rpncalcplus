@@ -2,10 +2,6 @@ export function classNames(arr: Array<string | undefined | boolean>) {
   return arr.filter((e) => !!e).join(" ")
 }
 
-export function drg(angle: number) {
-  return angle
-}
-
 export function factorial(n: number): number {
   return n ? n * factorial(n - 1) : 1
 }
@@ -46,9 +42,9 @@ export function operator(stack: Array<string>, o: string) {
     case "pi":
       return [...stack, Math.PI.toString()]
     case "sin":
-      return [...stack.slice(0, -1), toStr(Math.sin(drg(last(1))))]
+      return [...stack.slice(0, -1), toStr(Math.sin(last(1)))]
     case "asin":
-      return [...stack.slice(0, -1), toStr(Math.asin(drg(last(1))))]
+      return [...stack.slice(0, -1), toStr(Math.asin(last(1)))]
     case "cos":
       return [...stack.slice(0, -1), toStr(Math.cos(last(1)))]
     case "acos":
