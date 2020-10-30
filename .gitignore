@@ -28,3 +28,4 @@ firebase.json
 .firebase
 .vscode
 push.sh
+debug.log

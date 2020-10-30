@@ -16,7 +16,7 @@ export default function Keyboard({
   }
 }) {
   return (
-    <div className={classNames(["keyboard", !!mod.has("help") && "help"])}>
+    <div className={classNames(["keyboard", (mod.has("help") || mod.has("hist")) && "fullscreen"])}>
       {keys
         .filter((e) =>
           kbd.mod.has("Shift")

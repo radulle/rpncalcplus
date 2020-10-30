@@ -18,13 +18,12 @@ export default function Calculator() {
   const kbd = useKeyboard(keys, mod, toggleMod)
 
   React.useEffect(() => writeComands(commands))
-  const help = mod.has("help")
 
   return (
     <EventsContext.Provider value={kbd}>
-      <div className={classNames(["frame", !!help && "help"])}>
+      <div className={classNames(["frame", (mod.has('help') || mod.has('hist')) && "fullscreen"])}>
         <Header {...{ mod, toggleMod, handleNote }} />
-        <Display {...{ commands, stack, help, note, handleNote }} />
+        <Display {...{ commands, stack, mod, note, handleNote }} />
       </div>
       <Keyboard {...{ mod, keys, kbd }} />
     </EventsContext.Provider>

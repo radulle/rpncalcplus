@@ -6,12 +6,12 @@
   box-shadow: inset 0 0.25rem 0 0 var(--color-display-shadow);
   flex: 1;
 
-  & div {
+  div {
     font-size: 2.25rem;
     font-family: Calculator;
   }
 
-  & button {
+  button {
     background: none;
     color: inherit;
     border: none;
@@ -23,57 +23,6 @@
     &:active {
       opacity: 0.5;
     }
-  }
-
-  & .marks {
-    position: absolute;
-    bottom: 0.5rem;
-    left: 0.25rem;
-    & * {
-      display: block;
-      height: 0.75rem;
-      font-family: var(--font);
-      font-size: 0.75rem;
-      margin-top: 1.5rem;
-    }
-  }
-
-  & .stack {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.75rem;
-  }
-
-  & .stack * {
-    text-align: right;
-    width: 100%;
-  }
-
-  & .stack .result {
-    display: flex;
-    height: 2.25rem;
-    cursor: pointer;
-  }
-
-  & .stack .mantisa {
-    flex: 1;
-  }
-
-  & .stack .exponent {
-    font-size: 1.125rem;
-    width: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  & .stack .exponent .sup {
-    font-size: 1.125rem;
-    flex: 1;
-  }
-
-  & .stack .exponent .sub {
-    font-family: var(--font);
-    font-size: 0.75rem;
   }
 
   &::after {
@@ -104,26 +53,77 @@
     transition-timing-function: ease;
   }
 
-  & .help {
+  .marks {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.25rem;
+    * {
+      display: block;
+      height: 0.75rem;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      margin-top: 1.5rem;
+    }
+  }
+
+  .stack {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
+
+    * {
+      text-align: right;
+      width: 100%;
+    }
+
+    .result {
+      display: flex;
+      height: 2.25rem;
+      cursor: pointer;
+    }
+
+    .mantisa {
+      flex: 1;
+    }
+
+    .exponent {
+      font-size: 1.125rem;
+      width: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exponent .sup {
+      font-size: 1.125rem;
+      flex: 1;
+    }
+
+    .exponent .sub {
+      font-family: var(--font);
+      font-size: 0.75rem;
+    }
+  }
+
+  .help {
     text-align: left;
     font-size: 1.5rem;
     width: 100%;
     padding: 0.25rem;
     overflow-y: auto;
     height: 100%;
+
+    a {
+      text-decoration: none;
+      color: var(--color-teal-shadow);
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
   }
 
-  & .help a {
-    text-decoration: none;
-    color: var(--color-teal-shadow);
-  }
-
-  & .help p {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  & .info {
+  .info {
     position: absolute;
     top: 0;
     left: 0;
@@ -133,25 +133,25 @@
     z-index: 1;
     box-shadow: inset 0 0.25rem 0 0 var(--color-display-shadow);
 
-    & > div {
+    > div {
       margin: 0.5rem;
       border-bottom: 1.25px solid;
     }
 
-    & .action.link:hover,
-    & .close:hover {
+    .action.link:hover,
+    .close:hover {
       color: var(--color-teal-shadow);
       cursor: pointer;
     }
 
-    & .action {
+    .action {
       font-size: 1.5rem;
       text-align: left;
       max-width: max-content;
       margin-right: 1rem;
     }
 
-    & .close {
+    .close {
       position: absolute;
       right: 0.5rem;
       top: 0;

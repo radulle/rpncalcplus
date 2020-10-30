@@ -1,40 +1,35 @@
-.keyboard {
-  margin-top: 0.5rem;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 2.25rem;
-  row-gap: 1rem;
-  column-gap: 0.5rem;
-  transition-property: opacity;
-  transition-duration: 2s;
-  transition-timing-function: ease;
-  flex: 0;
-  opacity: 1;
-  height: max-content;
-  &.help {
-    overflow: hidden;
-    height: 0;
-    opacity: 0;
-  }
-  & button {
-    height: 100%;
-  }
-}
-
-.keyboard button,
-.header button {
-  color: var(--color-bg);
-  user-select: none;
-  margin-bottom: 0.75rem;
-  border: 0;
-  border-radius: 0.25rem;
-  top: 0;
-  background-color: var(--color-button);
-  box-shadow: 0 0.5rem 0 0 var(--color-button-shadow);
-  cursor: pointer;
+button.key {
   position: relative;
+  cursor: pointer;
+  user-select: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  padding-bottom: 0.5rem;
+  color: var(--color-bg);
   &:focus {
     outline: none;
+  }
+  & .btn {
+    position: relative;
+    border-radius: 0.25rem;
+    background-color: var(--color-button);
+    height: 100%;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    height: calc(100% - 0.5rem);
+    width: 100%;
+    border-radius: 0.25rem;
+    background-color: var(--color-button-shadow);
   }
 
   & .badge {
@@ -51,35 +46,24 @@
     line-height: 1.4rem;
     z-index: 1;
     vertical-align: middle;
-    text-align: center;    
+    text-align: center;
   }
-  &:active,
-  &.active {
-    outline: none;
-    position: relative;
+  &:active .btn,
+  &.active .btn {
     top: 0.25rem;
-    transition: all 0.1s;
-    box-shadow: 0 0.25rem 0 0 var(--color-button-shadow);
+    transition: top 0.1s;
   }
   &.enter {
     grid-column-start: -3;
     grid-column-end: -1;
   }
 
-  &.empty {
-    background: black;
-    opacity: 0.2;
-    box-shadow: none;
-    color: black;
-    margin-top: 0.5rem;
-  }
-
-  @mixin button($background, $shadow) {
-    background-color: $background;
-    box-shadow: 0 0.5rem 0 0 $shadow;
-    &:active,
-    &.active {
-      box-shadow: 0 0.25rem 0 0 $shadow;
+  @mixin key($background, $shadow) {
+    &::before {
+      background-color: $shadow;
+    }
+    & .btn {
+      background-color: $background;
     }
     & .badge {
       background-color: $background;
@@ -87,11 +71,45 @@
     }
   }
 
-  $colors: 'red', 'orange', 'yellow', 'teal', 'navy', 'green';
+  $colors: "red", "orange", "yellow", "teal", "navy", "green", "blue";
 
   @each $color in $colors {
     &.#{$color} {
-      @include button(var(--color-#{$color}), var(--color-#{$color}-shadow));
+      @include key(var(--color-#{$color}), var(--color-#{$color}-shadow));
     }
+  }
+}
+
+.keyboard {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 2.75rem;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  transition-property: opacity;
+  transition-duration: 2s;
+  transition-timing-function: ease;
+  opacity: 1;
+  &.fullscreen {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+}
+
+.header button.key {
+  margin-left: 0.25rem;
+  height: 1.5rem;
+  width: 2.5rem;
+  & .badge {
+    right: -0.75rem;
+    top: -0.75rem;
+  }
+  & .btn {
+    font-size: 0.75rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }

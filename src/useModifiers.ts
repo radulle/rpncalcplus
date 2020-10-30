@@ -1,19 +1,19 @@
-import * as React from "react";
+import * as React from "react"
 
 export default function useKeyboard() {
-  const [mod, setMod] = React.useState<Set<string>>(new Set());
+  const [mod, setMod] = React.useState<Set<string>>(new Set())
 
-  const toggleMod = (key: string, set?: boolean) => () => {
-    if (set === true) return setMod((prev) => new Set(prev).add(key));
-    if (mod.has(key)) {
-      return setMod((prev) => {
-        const mods = new Set(prev);
-        mods.delete(key);
-        return mods;
-      });
-    }
-    return setMod((prev) => new Set(prev).add(key));
-  };
+  const toggleMod = (key: string, state?: boolean) => () => {
+    return setMod((prev) => {
+      const curr = new Set(prev)
+      if ((curr.has(key) && state !== true) || state === false) {
+        curr.delete(key)
+        return curr
+      }
+      curr.add(key)
+      return curr
+    })
+  }
 
-  return { mod, toggleMod };
+  return { mod, toggleMod }
 }

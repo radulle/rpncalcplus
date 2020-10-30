@@ -42,18 +42,19 @@ export default function Key({
     navigator.vibrate?.(25)
     onClick()
   }
-  
+
   return (
     <button
+      onClick={handleClick}
       className={classNames([
+        'key',
         color,
         !modifier && key === kbd && "active",
         modifier && mod.has(kbd) && "active",
         className,
       ])}
-      onClick={handleClick}
     >
-      {title}
+      <div className="btn">{title}</div>
       {(mod.has("Alt") || mod.has("F1")) && (
         <div className="badge">{map(kbd)}</div>
       )}

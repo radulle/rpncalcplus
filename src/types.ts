@@ -1,11 +1,11 @@
-type Color = "red" | "yellow" | "green" | "teal" | "orange" | "navy";
+type Color = "red" | "yellow" | "green" | "teal" | "orange" | "navy" | "blue";
 
 export interface KeyInterface {
-  color?: Color;
   title: string | React.ReactElement;
   kbd: string;
-  className?: string;
   onClick: () => void;
+  color?: Color;
+  className?: string;
   main?: boolean;
   secondary?: boolean;
   modifier?: boolean;
