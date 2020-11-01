@@ -1,5 +1,5 @@
 import * as React from "react"
-import EventsContext from "./EventsContext"
+import { useContext } from "./Context"
 import { KeyInterface } from "./types"
 import { classNames } from "./utils"
 
@@ -36,7 +36,7 @@ export default function Key({
   onClick,
   modifier,
 }: KeyInterface) {
-  const { key, mod } = React.useContext(EventsContext)
+  const { key, mod } = useContext()
 
   const handleClick = () => {
     navigator.vibrate?.(25)
@@ -47,7 +47,7 @@ export default function Key({
     <button
       onClick={handleClick}
       className={classNames([
-        'key',
+        "key",
         color,
         !modifier && key === kbd && "active",
         modifier && mod.has(kbd) && "active",

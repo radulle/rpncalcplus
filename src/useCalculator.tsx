@@ -1,14 +1,19 @@
-import * as React from "react";
-import SplitNum from "./SplitNum";
-import { KeyInterface, NoteProps } from "./types";
-import { calc, readCommands } from "./utils";
+import * as React from "react"
+import SplitNum from "./SplitNum"
+import { KeyInterface, NoteProps } from "./types"
+import { calc, readCommands, writeComands } from "./utils"
 
-export default function useStack(
+export default function useCalculator(
   mod: Set<string>,
   toggleMod: (key: string, set?: boolean) => () => void,
   handleNote: (note?: NoteProps) => () => void
 ) {
-  const [commands, setCommands] = React.useState<Array<string>>(readCommands());
+  const [commands, setCommands] = React.useState<Array<string>>(readCommands)
+
+  React.useEffect(() => writeComands(commands))
+
+  const slice = (i: number) =>
+    setCommands((prev) => prev.slice(undefined, i + 1))
 
   const handleOperation = (e: string, minStack: number) => () => {
     if (!!minStack && calc(commands).length < minStack) {
@@ -16,89 +21,89 @@ export default function useStack(
         action: `This operation requires at least ${minStack} argument${
           minStack > 1 ? "s" : ""
         }`,
-        expire: 3000
-      })();
-      return;
+        expire: 3000,
+      })()
+      return
     }
     setCommands((prev) => {
-      return [...prev, e];
-    });
-  };
+      return [...prev, e]
+    })
+  }
 
   const handleNumeral = (e: number | string) => () => {
     setCommands((prev) => {
-      const length = prev.length;
-      if (!length) return [e.toString()];
-      const current = new SplitNum(prev[length - 1]);
-      if (!current.isNumber) return [...prev, e.toString()];
-      if (e === 0 && current.mantisa === "0") return prev;
-      if (current.mantisa === "0") return [...prev.slice(0, -1), e.toString()];
+      const length = prev.length
+      if (!length) return [e.toString()]
+      const current = new SplitNum(prev[length - 1])
+      if (!current.isNumber) return [...prev, e.toString()]
+      if (e === 0 && current.mantisa === "0") return prev
+      if (current.mantisa === "0") return [...prev.slice(0, -1), e.toString()]
       if (current.exponent !== undefined) {
-        return [...prev.slice(0, -1), current.exponentPush(e)];
+        return [...prev.slice(0, -1), current.exponentPush(e)]
       }
       if (current.mantisaNum.replace(".", "").length < 13)
-        return [...prev.slice(0, -1), current.mantisa + e];
-      return prev;
-    });
-  };
+        return [...prev.slice(0, -1), current.mantisa + e]
+      return prev
+    })
+  }
 
   const handleClearLastDigit = () => {
     setCommands((prev) => {
-      const length = prev.length;
-      if (!length) return prev;
-      const current = prev[length - 1];
+      const length = prev.length
+      if (!length) return prev
+      const current = prev[length - 1]
       if (isNaN(parseFloat(current))) {
-        return [...prev, "drop", "0"];
+        return [...prev, "drop", "0"]
       }
-      if (current.length === 1) return [...prev.slice(0, -1), "0"];
+      if (current.length === 1) return [...prev.slice(0, -1), "0"]
       if (current.slice(-2, -1) === "e")
-        return [...prev.slice(0, -1), current.slice(0, -2)];
-      return [...prev.slice(0, -1), current.slice(0, -1)];
-    });
-  };
+        return [...prev.slice(0, -1), current.slice(0, -2)]
+      return [...prev.slice(0, -1), current.slice(0, -1)]
+    })
+  }
 
   const handleComma = () =>
     setCommands((prev) => {
-      const length = prev.length;
-      if (!length) return prev;
-      const current = prev[length - 1];
-      if (isNaN(parseFloat(current))) return [...prev, "0."];
+      const length = prev.length
+      if (!length) return prev
+      const current = prev[length - 1]
+      if (isNaN(parseFloat(current))) return [...prev, "0."]
       if (current.indexOf(".") === -1)
-        return [...prev.slice(0, -1), current + "."];
-      return prev;
-    });
+        return [...prev.slice(0, -1), current + "."]
+      return prev
+    })
 
   const handleExponent = () =>
     setCommands((prev) => {
-      console.info();
-      const length = prev.length;
-      if (!length) return prev;
-      const current = prev[length - 1];
-      if (isNaN(parseFloat(current))) return [...prev, "1e0"];
-      if (parseFloat(current) === 0) return [...prev.slice(0, -1), "1e0"];
+      console.info()
+      const length = prev.length
+      if (!length) return prev
+      const current = prev[length - 1]
+      if (isNaN(parseFloat(current))) return [...prev, "1e0"]
+      if (parseFloat(current) === 0) return [...prev.slice(0, -1), "1e0"]
       if (current.indexOf("e") === -1)
-        return [...prev.slice(0, -1), current + "e0"];
-      return prev;
-    });
+        return [...prev.slice(0, -1), current + "e0"]
+      return prev
+    })
 
   const handlePlusMinus = () =>
     setCommands((prev) => {
-      const length = prev.length;
-      if (!length) return prev;
-      const current = new SplitNum(prev[length - 1]);
-      if (!current.isNumber) return [...prev, "neg"];
-      return [...prev.slice(0, -1), current.toggleSign()];
-    });
+      const length = prev.length
+      if (!length) return prev
+      const current = new SplitNum(prev[length - 1])
+      if (!current.isNumber) return [...prev, "neg"]
+      return [...prev.slice(0, -1), current.toggleSign()]
+    })
 
-  const handleClearScreen = () => setCommands(["0"]);
+  const handleClearScreen = () => setCommands(["0"])
 
-  const handleSto = () => localStorage.setItem("mem", stack[stack.length - 1]);
+  const handleSto = () => localStorage.setItem("mem", stack[stack.length - 1])
 
   const handleRcl = () => {
-    const mem = localStorage.getItem("mem");
+    const mem = localStorage.getItem("mem")
     if (mem !== null && mem !== undefined && !isNaN(parseFloat(mem)))
-      setCommands((prev) => [...prev, mem]);
-  };
+      setCommands((prev) => [...prev, mem])
+  }
 
   const keys: KeyInterface[] = [
     // modifiers
@@ -109,7 +114,7 @@ export default function useStack(
       onClick: toggleMod("Shift"),
       main: true,
       secondary: true,
-      modifier: true
+      modifier: true,
     },
     {
       kbd: "Control",
@@ -118,7 +123,7 @@ export default function useStack(
       onClick: toggleMod("Control"),
       main: false,
       secondary: true,
-      modifier: true
+      modifier: true,
     },
     // main
     {
@@ -126,28 +131,28 @@ export default function useStack(
       title: "over",
       color: "orange",
       onClick: handleOperation("over", 3),
-      main: true
+      main: true,
     },
     {
       kbd: "ArrowRight",
       title: "swap",
       color: "orange",
       onClick: handleOperation("swap", 2),
-      main: true
+      main: true,
     },
     {
-      kbd: "`",
-      title: "cls",
-      color: "red",
-      onClick: handleClearScreen,
-      main: true
+      kbd: "ArrowUp",
+      title: "sto",
+      color: "orange",
+      onClick: handleSto,
+      main: true,
     },
     {
       kbd: "Delete",
       title: "drop",
       color: "red",
       onClick: handleOperation("drop", 1),
-      main: true
+      main: true,
     },
     { kbd: "7", title: "7", onClick: handleNumeral(7), main: true },
     { kbd: "8", title: "8", onClick: handleNumeral(8), main: true },
@@ -157,14 +162,14 @@ export default function useStack(
       title: "exp",
       color: "yellow",
       onClick: handleExponent,
-      main: true
+      main: true,
     },
     {
       kbd: "Backspace",
       title: "C",
       color: "red",
       onClick: handleClearLastDigit,
-      main: true
+      main: true,
     },
     { kbd: "4", title: "4", onClick: handleNumeral(4), main: true },
     { kbd: "5", title: "5", onClick: handleNumeral(5), main: true },
@@ -174,14 +179,14 @@ export default function useStack(
       title: "+",
       color: "navy",
       onClick: handleOperation("+", 2),
-      main: true
+      main: true,
     },
     {
       kbd: "-",
       title: "-",
       color: "navy",
       onClick: handleOperation("-", 2),
-      main: true
+      main: true,
     },
     { kbd: "1", title: "1", onClick: handleNumeral(1), main: true },
     { kbd: "2", title: "2", onClick: handleNumeral(2), main: true },
@@ -191,7 +196,7 @@ export default function useStack(
       title: "×",
       color: "navy",
       onClick: handleOperation("*", 2),
-      main: true
+      main: true,
     },
     {
       kbd: "/",
@@ -199,7 +204,7 @@ export default function useStack(
       color: "navy",
       className: "small",
       onClick: handleOperation("/", 2),
-      main: true
+      main: true,
     },
     { kbd: "n", title: "±", onClick: handlePlusMinus, main: true },
     { kbd: "0", title: "0", onClick: handleNumeral(0), main: true },
@@ -211,15 +216,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("mod", 2),
       main: false,
-      secondary: true
-    },
-    {
-      kbd: "ArrowUp",
-      title: "sto",
-      color: "orange",
-      onClick: handleSto,
-      main: false,
-      secondary: true
+      secondary: true,
     },
     {
       kbd: "ArrowDown",
@@ -227,7 +224,14 @@ export default function useStack(
       color: "orange",
       onClick: handleRcl,
       main: false,
-      secondary: true
+      secondary: true,
+    },
+    {
+      kbd: "~",
+      title: "cls",
+      color: "red",
+      onClick: handleClearScreen,
+      secondary: true,
     },
     {
       kbd: "S",
@@ -235,7 +239,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "sin", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "s",
@@ -243,7 +247,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "asin", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "C",
@@ -251,7 +255,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "cos", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "c",
@@ -259,7 +263,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "acos", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "T",
@@ -267,7 +271,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "tan", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "t",
@@ -275,7 +279,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "atan", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "I",
@@ -283,7 +287,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("inv", 1),
       main: false,
-      secondary: true
+      secondary: true,
     },
     {
       kbd: "A",
@@ -291,7 +295,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("abs", 1),
       main: false,
-      secondary: true
+      secondary: true,
     },
     {
       kbd: "X",
@@ -299,7 +303,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "sinh", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "x",
@@ -307,7 +311,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "asinh", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "D",
@@ -315,7 +319,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "cosh", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "d",
@@ -323,7 +327,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "acosh", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "G",
@@ -331,7 +335,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "tanh", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "g",
@@ -339,7 +343,7 @@ export default function useStack(
       onClick: handleOperation((!!mod.has("deg") ? "d" : "") + "atnh", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "P",
@@ -347,7 +351,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("pi", 0),
       main: false,
-      secondary: true
+      secondary: true,
     },
     {
       kbd: "E",
@@ -355,7 +359,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("e", 0),
       main: false,
-      secondary: true
+      secondary: true,
     },
 
     {
@@ -368,7 +372,7 @@ export default function useStack(
       onClick: handleOperation("x^2", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "f2",
@@ -380,7 +384,7 @@ export default function useStack(
       onClick: handleOperation("sqrt", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "F3",
@@ -392,7 +396,7 @@ export default function useStack(
       onClick: handleOperation("x^3", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "f3",
@@ -404,7 +408,7 @@ export default function useStack(
       onClick: handleOperation("cbrt", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "F4",
@@ -416,7 +420,7 @@ export default function useStack(
       onClick: handleOperation("y^x", 2),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "f4",
@@ -428,7 +432,7 @@ export default function useStack(
       onClick: handleOperation("xrt", 2),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "!",
@@ -436,7 +440,7 @@ export default function useStack(
       color: "navy",
       onClick: handleOperation("n!", 1),
       main: false,
-      secondary: true
+      secondary: true,
     },
     {
       kbd: ">",
@@ -445,7 +449,7 @@ export default function useStack(
       onClick: handleOperation(">deg", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "<",
@@ -454,7 +458,7 @@ export default function useStack(
       onClick: handleOperation(">rad", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "f5",
@@ -466,7 +470,7 @@ export default function useStack(
       onClick: handleOperation("e^x", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "F5",
@@ -474,7 +478,7 @@ export default function useStack(
       onClick: handleOperation("ln", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "f6",
@@ -486,7 +490,7 @@ export default function useStack(
       onClick: handleOperation("10^x", 1),
       main: false,
       secondary: true,
-      inverse: true
+      inverse: true,
     },
     {
       kbd: "F6",
@@ -494,7 +498,7 @@ export default function useStack(
       onClick: handleOperation("log", 1),
       main: false,
       secondary: true,
-      inverse: false
+      inverse: false,
     },
     {
       kbd: "F7",
@@ -505,7 +509,7 @@ export default function useStack(
       ),
       onClick: handleOperation("logxy", 1),
       main: false,
-      secondary: true
+      secondary: true,
     },
     // enter
     {
@@ -515,15 +519,16 @@ export default function useStack(
       className: "enter",
       onClick: handleOperation("enter", 1),
       main: true,
-      secondary: true
-    }
-  ];
+      secondary: true,
+    },
+  ]
 
-  const stack = calc(commands);
+  const stack = calc(commands)
 
   return {
     stack,
     commands,
-    keys
-  };
+    slice,
+    keys,
+  }
 }

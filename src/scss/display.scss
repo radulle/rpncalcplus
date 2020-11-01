@@ -68,22 +68,35 @@
 
   .stack {
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.75rem;
+    bottom: 0rem;
+    padding: 0.5rem;
+    width: 100%;
 
-    * {
+    .command {
+      border: black 1px solid;
+      align-items: center;
+      border-radius: 0.25rem;
+      width: max-content;
+      padding: 0 0.5rem;
+      margin: 0.25rem 0;
+      display: flex;
+      height: 1.75rem;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 1.125rem;
+    }
+
+    .number {
+      display: flex;
+      height: 2.25rem;
+      cursor: pointer;
       text-align: right;
       width: 100%;
     }
 
-    .result {
-      display: flex;
-      height: 2.25rem;
-      cursor: pointer;
-    }
-
     .mantisa {
       flex: 1;
+      text-align: right;
     }
 
     .exponent {
@@ -104,11 +117,11 @@
     }
   }
 
-  .help {
+  .help,
+  .history {
     text-align: left;
     font-size: 1.5rem;
-    width: 100%;
-    padding: 0.25rem;
+    padding: 0.5rem;
     overflow-y: auto;
     height: 100%;
 

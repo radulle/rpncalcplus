@@ -79,5 +79,5 @@ export default function useKeyboard(
     }
   })
 
-  return { key, mod }
+  return key
 }

@@ -1,34 +1,29 @@
 import * as React from "react"
+import { useContext } from "./Context"
 import Help from "./Help"
 import History from "./History"
 import Note from "./Note"
 import Stack from "./Stack"
-import { NoteProps } from "./types"
 
 export default function Display({
   commands,
   stack,
-  mod,
-  handleNote,
-  note,
+  slice,
 }: {
   commands: string[]
   stack: string[]
-  mod: Set<string>
-  note?: NoteProps
-  handleNote: (note?: NoteProps) => () => void
+  slice: (i: number) => void
 }) {
+  const { mod, handleNote, note } = useContext()
   return (
     <div className="display">
+      <Note {...{ note, handleNote }} />
       {mod.has("help") ? (
         <Help />
       ) : mod.has("hist") ? (
-        <History />
+        <History commands={commands} slice={slice} />
       ) : (
-        <>
-          <Note {...{ note, handleNote }} />
-          <Stack {...{ commands, stack }} />
-        </>
+        <Stack {...{ commands, stack }} />
       )}
     </div>
   )
