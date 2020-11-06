@@ -111,7 +111,14 @@ export default function useCalculator(
       kbd: "Shift",
       title: "shft",
       color: "teal",
-      onClick: toggleMod("Shift"),
+      onClick: () => {
+        if (mod.has("Shift")) {
+          toggleMod("Shift", false)()
+          toggleMod("Control", false)()
+          return
+        }
+        toggleMod("Shift", true)()
+      },
       main: true,
       secondary: true,
       modifier: true,
