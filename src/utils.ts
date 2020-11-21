@@ -1,18 +1,25 @@
+import { Decimal } from "decimal.js"
+
+const PI = Decimal.acos(-1)
+const E = new Decimal(1).exp()
+const ZERO = new Decimal(0)
+const ONE = new Decimal(1)
+
 export function classNames(arr: Array<string | undefined | boolean>) {
   return arr.filter((e) => !!e).join(" ")
 }
 
-export function factorial(n: number): number {
-  return n ? n * factorial(n - 1) : 1
+export function factorial(n: Decimal): Decimal {
+  return n.equals(ZERO) ? ONE : n.mul(factorial(n.sub(1)))
 }
 
-const rad2deg = (rad: number) => (rad * 180) / Math.PI
-const deg2rad = (deg: number) => (deg * Math.PI) / 180
+const rad2deg = (rad: Decimal) => rad.mul(180).div(PI)
+const deg2rad = (deg: Decimal) => deg.mul(PI).div(180)
 
 export function operator(stack: Array<string>, o: string) {
   const length = stack.length
-  const last = (i: number) => parseFloat(stack[length - i])
-  const toStr = (num: number) => num.toString()
+  const last = (i: number) => new Decimal(stack[length - i])
+  const toStr = (num: Decimal) => num.toString()
   switch (o) {
     case "drop":
       return stack.slice(0, -1)
@@ -26,102 +33,102 @@ export function operator(stack: Array<string>, o: string) {
         stack[length - 3],
       ]
     case "+":
-      return [...stack.slice(0, -2), toStr(last(2) + last(1))]
+      return [...stack.slice(0, -2), toStr(last(2).add(last(1)))]
     case "-":
-      return [...stack.slice(0, -2), toStr(last(2) - last(1))]
+      return [...stack.slice(0, -2), toStr(last(2).sub(last(1)))]
     case "*":
-      return [...stack.slice(0, -2), toStr(last(2) * last(1))]
+      return [...stack.slice(0, -2), toStr(last(2).mul(last(1)))]
     case "/":
-      return [...stack.slice(0, -2), toStr(last(2) / last(1))]
+      return [...stack.slice(0, -2), toStr(last(2).div(last(1)))]
     case "mod":
-      return [...stack.slice(0, -2), toStr(last(2) % last(1))]
+      return [...stack.slice(0, -2), toStr(last(2).mod(last(1)))]
     case "inv":
-      return [...stack.slice(0, -1), toStr(1 / last(1))]
+      return [...stack.slice(0, -1), toStr(ONE.div(last(1)))]
     case "neg":
-      return [...stack.slice(0, -1), toStr(-last(1))]
+      return [...stack.slice(0, -1), toStr(last(1).neg())]
     case "pi":
-      return [...stack, Math.PI.toString()]
+      return [...stack, toStr(PI)]
     case "sin":
-      return [...stack.slice(0, -1), toStr(Math.sin(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.sin(last(1)))]
     case "asin":
-      return [...stack.slice(0, -1), toStr(Math.asin(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.asin(last(1)))]
     case "cos":
-      return [...stack.slice(0, -1), toStr(Math.cos(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.cos(last(1)))]
     case "acos":
-      return [...stack.slice(0, -1), toStr(Math.acos(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.acos(last(1)))]
     case "tan":
-      return [...stack.slice(0, -1), toStr(Math.tan(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.tan(last(1)))]
     case "atan":
-      return [...stack.slice(0, -1), toStr(Math.atan(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.atan(last(1)))]
     case "sinh":
-      return [...stack.slice(0, -1), toStr(Math.sinh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.sinh(last(1)))]
     case "asinh":
-      return [...stack.slice(0, -1), toStr(Math.asinh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.asinh(last(1)))]
     case "cosh":
-      return [...stack.slice(0, -1), toStr(Math.cosh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.cosh(last(1)))]
     case "acosh":
-      return [...stack.slice(0, -1), toStr(Math.acosh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.acosh(last(1)))]
     case "tanh":
-      return [...stack.slice(0, -1), toStr(Math.tanh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.tanh(last(1)))]
     case "atanh":
-      return [...stack.slice(0, -1), toStr(Math.atanh(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.atanh(last(1)))]
     case "dsin":
-      return [...stack.slice(0, -1), toStr(Math.sin(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.sin(deg2rad(last(1))))]
     case "dasin":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.asin(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.asin(last(1))))]
     case "dcos":
-      return [...stack.slice(0, -1), toStr(Math.cos(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.cos(deg2rad(last(1))))]
     case "dacos":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.acos(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.acos(last(1))))]
     case "dtan":
-      return [...stack.slice(0, -1), toStr(Math.tan(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.tan(deg2rad(last(1))))]
     case "datan":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.atan(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.atan(last(1))))]
     case "dsinh":
-      return [...stack.slice(0, -1), toStr(Math.sinh(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.sinh(deg2rad(last(1))))]
     case "dasinh":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.asinh(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.asinh(last(1))))]
     case "dcosh":
-      return [...stack.slice(0, -1), toStr(Math.cosh(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.cosh(deg2rad(last(1))))]
     case "dacosh":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.acosh(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.acosh(last(1))))]
     case "dtanh":
-      return [...stack.slice(0, -1), toStr(Math.tanh(deg2rad(last(1))))]
+      return [...stack.slice(0, -1), toStr(Decimal.tanh(deg2rad(last(1))))]
     case "datanh":
-      return [...stack.slice(0, -1), toStr(rad2deg(Math.atanh(last(1))))]
+      return [...stack.slice(0, -1), toStr(rad2deg(Decimal.atanh(last(1))))]
     case "e":
-      return [...stack, Math.E.toString()]
+      return [...stack, toStr(E)]
     case "x^2":
-      return [...stack.slice(0, -1), toStr(Math.pow(last(1), 2))]
+      return [...stack.slice(0, -1), toStr(Decimal.pow(last(1), 2))]
     case "x^3":
-      return [...stack.slice(0, -1), toStr(Math.pow(last(1), 3))]
+      return [...stack.slice(0, -1), toStr(Decimal.pow(last(1), 3))]
     case "y^x":
-      return [...stack.slice(0, -2), toStr(Math.pow(last(2), last(1)))]
+      return [...stack.slice(0, -2), toStr(Decimal.pow(last(2), last(1)))]
     case "sqrt":
-      return [...stack.slice(0, -1), toStr(Math.sqrt(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.sqrt(last(1)))]
     case "cbrt":
-      return [...stack.slice(0, -1), toStr(Math.cbrt(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.cbrt(last(1)))]
     case "xrt":
-      return [...stack.slice(0, -2), toStr(Math.pow(last(2), 1 / last(1)))]
+      return [...stack.slice(0, -2), toStr(Decimal.pow(last(2), ONE.div(last(1))))]
     case "ln":
-      return [...stack.slice(0, -1), toStr(Math.log(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.log(last(1)))]
     case "e^x":
-      return [...stack.slice(0, -1), toStr(Math.pow(Math.E, last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.pow(E, last(1)))]
     case "log":
-      return [...stack.slice(0, -1), toStr(Math.log10(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.log10(last(1)))]
     case "10^x":
-      return [...stack.slice(0, -1), toStr(Math.pow(10, last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.pow(10, last(1)))]
     case "logxy":
       return [
         ...stack.slice(0, -2),
-        toStr(Math.log10(last(2)) / Math.log10(last(1))),
+        toStr(Decimal.log10(last(2)).div(Decimal.log10(last(1)))),
       ]
     case "abs":
-      return [...stack.slice(0, -1), toStr(Math.abs(last(1)))]
+      return [...stack.slice(0, -1), toStr(Decimal.abs(last(1)))]
     case "n!":
       return [
         ...stack.slice(0, -1),
-        last(1) % 1 === 0 && last(1) >= 0 ? toStr(factorial(last(1))) : "NaN",
+        last(1).mod(1).equals(ZERO) && last(1).greaterThanOrEqualTo(ZERO) ? toStr(factorial(last(1))) : "NaN",
       ]
     case ">rad":
       return [...stack.slice(0, -1), toStr(deg2rad(last(1)))]
@@ -134,8 +141,8 @@ export function operator(stack: Array<string>, o: string) {
   }
 }
 
-export function calc(stack: Array<any>): Array<string> {
-  return stack.reduce((acc, cur, i, arr) => {
+export function calc(commands: string[]): string[] {
+  return commands.reduce((acc: string[], cur, i, arr) => {
     if (!isNaN(parseFloat(cur)) || cur === ".") {
       if (arr[i - 1] === "enter") return [...acc.slice(0, -1), cur]
       return [...acc, cur]

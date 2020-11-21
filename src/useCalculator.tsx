@@ -8,7 +8,7 @@ export default function useCalculator(
   toggleMod: (key: string, set?: boolean) => () => void,
   handleNote: (note?: NoteProps) => () => void
 ) {
-  const [commands, setCommands] = React.useState<Array<string>>(readCommands)
+  const [commands, setCommands] = React.useState<string[]>(readCommands)
 
   React.useEffect(() => writeComands(commands))
 

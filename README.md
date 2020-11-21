@@ -5,9 +5,10 @@ Reverse Polish Notation Calculator Plus (RPNcalc+) is:
 - RPN calculator (classical RPN with limitless stack)
 - free 
 - open source 
-- small (~50kB)
+- small (~90kB)
 - PWA (installable, works offline, standalone)
 - colorful and fun to use
+- uses [decimal.js](https://github.com/MikeMcl/decimal.js)
 
 deployed at https://rpncalcplus.web.app and https://rpncalculator.web.app.
 
