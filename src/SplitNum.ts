@@ -120,7 +120,7 @@ export default class SplitNum {
     const mantisa =
       mantisaSign +
       parseFloat(mantisaNum).toLocaleString(undefined, {
-        maximumFractionDigits: 15 - int.length,
+        maximumFractionDigits: int.length < 15 ? 15 - int.length : 0,
       }) +
       (!dec || parseInt(dec, 10) === 0
         ? separator + dec

@@ -1,7 +1,8 @@
 import * as React from "react"
+import { calc } from "./calc"
 import SplitNum from "./SplitNum"
 import { KeyInterface, NoteProps } from "./types"
-import { calc, readCommands, writeComands } from "./utils"
+import { readCommands, writeComands } from "./utils"
 
 export default function useCalculator(
   mod: Set<string>,
@@ -494,7 +495,7 @@ export default function useCalculator(
           10<sup>x</sup>
         </>
       ),
-      onClick: handleOperation("10^x", 1),
+      onClick: handleOperation("ten^x", 1),
       main: false,
       secondary: true,
       inverse: true,
