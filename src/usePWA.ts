@@ -1,5 +1,6 @@
 import * as React from "react"
 import { NoteProps } from "./types"
+import * as serviceWorker from "./serviceWorker"
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: Array<string>
@@ -12,10 +13,12 @@ interface BeforeInstallPromptEvent extends Event {
 
 let deferredPrompt: BeforeInstallPromptEvent | undefined
 
+/** registers service worker and handles install and update events */
 export default function usePWA(
   handleNote: (note?: NoteProps | undefined) => () => void
 ) {
   React.useEffect(() => {
+    // install action
     function onAction() {
       deferredPrompt?.prompt()
       deferredPrompt?.userChoice.then((choiceResult) => {
@@ -28,7 +31,8 @@ export default function usePWA(
       })
     }
 
-    function beforeinstallprompt(evt: Event) {
+    // install prompt
+    function prompt(evt: Event) {
       evt.preventDefault()
       deferredPrompt = evt as BeforeInstallPromptEvent
       handleNote({
@@ -37,17 +41,35 @@ export default function usePWA(
       })()
     }
 
-    function appinstalled() {
+    // install success
+    function onSuccess() {
       handleNote({
         action: "You can now access the app directly from homescreen.",
         expire: 3000,
       })()
     }
-    window.addEventListener("beforeinstallprompt", beforeinstallprompt)
-    window.addEventListener("appinstalled", appinstalled)
-    return () => {
-      document.removeEventListener("beforeinstallprompt", beforeinstallprompt)
-      document.removeEventListener("appinstalled", appinstalled)
+
+    // update prompt
+    function onUpdate(registration: ServiceWorkerRegistration) {
+      handleNote({
+        action: "New version of RPNcalc+ is available. Press to update.",
+        expire: 30000,
+        onAction: () => {
+          registration.waiting?.postMessage({ type: "SKIP_WAITING" })
+          window.location.reload()
+          handleNote({
+            action: "Update successful.",
+            expire: 3000,
+          })
+        },
+      })()
     }
-  })
+
+    serviceWorker.register({ onSuccess, onUpdate })
+    window.addEventListener("beforeinstallprompt", prompt)
+    return () => {
+      document.removeEventListener("beforeinstallprompt", prompt)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 }
