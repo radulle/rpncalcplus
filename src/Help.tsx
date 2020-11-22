@@ -8,7 +8,7 @@ export default function Help() {
         <a
           rel="noopener noreferrer"
           target="_blank"
-          href="https://www.hpmuseum.org/"
+          href="https://www.hpmuseum.org"
         >
           HP engineering calculators
         </a>{" "}
@@ -16,7 +16,7 @@ export default function Help() {
         <a
           rel="noopener noreferrer"
           target="_blank"
-          href="http://www.simplemachine.co/game/calculator-the-game/"
+          href="http://www.simplemachine.co/game/calculator-the-game"
         >
           Calculator The Game
         </a>{" "}
@@ -39,6 +39,9 @@ export default function Help() {
         </a>{" "}
         where you are free to report issues, request features and contribute.
       </p>
+      <p>Tips:</p>
+      <p>Try keyboard shortcuts by holding ALT, CTRL, SHIFT or F1.</p>
+      <p>Tap number on display to copy value to clipboard.</p>
     </div>
   )
 }
