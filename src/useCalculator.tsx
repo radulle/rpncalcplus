@@ -2,7 +2,7 @@ import * as React from "react"
 import { calc } from "./calc"
 import SplitNum from "./SplitNum"
 import { KeyInterface, NoteProps } from "./types"
-import { readCommands, writeComands } from "./utils"
+import { readCommands, writeCommands } from "./utils"
 
 export default function useCalculator(
   mod: Set<string>,
@@ -11,7 +11,7 @@ export default function useCalculator(
 ) {
   const [commands, setCommands] = React.useState<string[]>(readCommands)
 
-  React.useEffect(() => writeComands(commands))
+  React.useEffect(() => writeCommands(commands))
 
   const slice = (i: number) =>
     setCommands((prev) => prev.slice(undefined, i + 1))
@@ -37,13 +37,13 @@ export default function useCalculator(
       if (!length) return [e.toString()]
       const current = new SplitNum(prev[length - 1])
       if (!current.isNumber) return [...prev, e.toString()]
-      if (e === 0 && current.mantisa === "0") return prev
-      if (current.mantisa === "0") return [...prev.slice(0, -1), e.toString()]
+      if (e === 0 && current.mantissa === "0") return prev
+      if (current.mantissa === "0") return [...prev.slice(0, -1), e.toString()]
       if (current.exponent !== undefined) {
         return [...prev.slice(0, -1), current.exponentPush(e)]
       }
-      if (current.mantisaNum.replace(".", "").length < 13)
-        return [...prev.slice(0, -1), current.mantisa + e]
+      if (current.mantissaNum.replace(".", "").length < 13)
+        return [...prev.slice(0, -1), current.mantissa + e]
       return prev
     })
   }

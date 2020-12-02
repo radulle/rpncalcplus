@@ -26,16 +26,16 @@ export default class SplitNum {
     return number
   }
 
-  get mantisa() {
+  get mantissa() {
     return this.split[0]
   }
 
-  get mantisaSign() {
-    return this.getSign(this.mantisa)
+  get mantissaSign() {
+    return this.getSign(this.mantissa)
   }
 
-  get mantisaNum() {
-    return this.getNum(this.mantisa)
+  get mantissaNum() {
+    return this.getNum(this.mantissa)
   }
 
   get exponent() {
@@ -52,7 +52,7 @@ export default class SplitNum {
 
   exponentPush(e: string | number, limit: number = 2) {
     const a = [
-      this.mantisa,
+      this.mantissa,
       this.exponentSign + (this.exponentNum + e).slice(-limit),
     ].join("e")
     return a
@@ -67,59 +67,59 @@ export default class SplitNum {
   toggleSign() {
     if (this.exponent !== undefined) {
       this.string =
-        this.mantisa + "e" + this.revSign(this.exponentSign) + this.exponentNum
+        this.mantissa + "e" + this.revSign(this.exponentSign) + this.exponentNum
       return this.string
     }
-    this.string = this.revSign(this.mantisaSign) + this.mantisaNum
+    this.string = this.revSign(this.mantissaSign) + this.mantissaNum
     return this.string
   }
 
-  /** formats number (mantisa: 13 digits, exponent 2 digits) */
+  /** formats number (mantissa: 13 digits, exponent 2 digits) */
   get formatted() {
-    const mantisaSign =
-      this.mantisaSign[0] !== undefined ? this.mantisaSign[0] : ""
-    const mantisaNum = this.mantisaNum
+    const mantissaSign =
+      this.mantissaSign[0] !== undefined ? this.mantissaSign[0] : ""
+    const mantissaNum = this.mantissaNum
 
     // infinity
     if (
       this.string.indexOf("Infinity") !== -1 ||
       parseFloat(this.exponent) > 99
     ) {
-      return { mantisa: mantisaSign + "infinity" }
+      return { mantissa: mantissaSign + "infinity" }
     }
 
     // 0
     if (parseFloat(this.exponent) < -99) {
-      return { mantisa: 0 }
+      return { mantissa: 0 }
     }
 
-    // integer larger or eqeual to 1e14
-    if (mantisaNum.indexOf(".") === -1 && mantisaNum.length > 13) {
-      const num = mantisaNum[0] + separator + mantisaNum.slice(1)
+    // integer larger or equal to 1e14
+    if (mantissaNum.indexOf(".") === -1 && mantissaNum.length > 13) {
+      const num = mantissaNum[0] + separator + mantissaNum.slice(1)
       return {
-        mantisa:
-          mantisaSign +
+        mantissa:
+          mantissaSign +
           parseFloat(num).toLocaleString(undefined, {
             maximumFractionDigits: 12,
           }),
-        exponent: mantisaNum.length - 1,
+        exponent: mantissaNum.length - 1,
       }
     }
 
     // integer less than 1e14
-    if (mantisaNum.indexOf(".") === -1 && mantisaNum.length < 14) {
+    if (mantissaNum.indexOf(".") === -1 && mantissaNum.length < 14) {
       return {
-        mantisa: parseInt(this.mantisa, 10).toLocaleString(),
+        mantissa: parseInt(this.mantissa, 10).toLocaleString(),
         exponent: this.exponentSign + this.exponentNum,
       }
     }
 
     // decimal
-    const [int, dec] = mantisaNum.split(".")
+    const [int, dec] = mantissaNum.split(".")
 
-    const mantisa =
-      mantisaSign +
-      parseFloat(mantisaNum).toLocaleString(undefined, {
+    const mantissa =
+      mantissaSign +
+      parseFloat(mantissaNum).toLocaleString(undefined, {
         maximumFractionDigits: int.length < 15 ? 15 - int.length : 0,
       }) +
       (!dec || parseInt(dec, 10) === 0
@@ -127,7 +127,7 @@ export default class SplitNum {
         : dec.match(/[0]+$/)?.[0] || "")
 
     return {
-      mantisa,
+      mantissa,
       exponent: this.exponentSign + this.exponentNum,
     }
   }

@@ -2,16 +2,16 @@ import * as React from "react"
 import SplitNum from "./SplitNum"
 
 export default function Item({ num, onClick }: { num: SplitNum, onClick?: () => void }) {
-  const { mantisa, exponent } = num.formatted
+  const { mantissa, exponent } = num.formatted
   const handleClick = () => {
     if (onClick) return onClick()
     navigator?.clipboard?.writeText?.(
-      mantisa + (!!exponent ? "e" + exponent : "")
+      mantissa + (!!exponent ? "e" + exponent : "")
     )
   }
   return (
     <button className="number" onClick={handleClick}>
-      <div className="mantisa">{mantisa}</div>
+      <div className="mantissa">{mantissa}</div>
       <div className="exponent">
         {!!exponent && (
           <>

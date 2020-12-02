@@ -19,7 +19,7 @@ export default class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="errorboundary">
+        <div className="error-boundary">
           <p>
             Something's a bit off please <a href="/">try again</a>.
           </p>

@@ -10,7 +10,7 @@ export function readCommands() {
   return ["0"]
 }
 
-export function writeComands(commands: string[]) {
+export function writeCommands(commands: string[]) {
   localStorage.setItem("commands", JSON.stringify(commands))
 }
 
