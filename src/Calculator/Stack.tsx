@@ -1,10 +1,10 @@
 import * as React from "react"
-import Item from "./Item"
-import SplitNum from "./SplitNum"
+import { CalculatorNumber } from "../CalculatorNumber"
+import { Item } from "./Item"
 
 const marks = [9, 8, 7, 6, 5, 4, "z", "y", "x"]
 
-export default function Stack({
+export function Stack({
   commands,
   stack,
 }: {
@@ -21,7 +21,7 @@ export default function Stack({
       {!!commands.length && (
         <div className="stack">
           {stack.map((el, i) => (
-            <Item key={i} num={new SplitNum(el)} />
+            <Item key={i} num={new CalculatorNumber(el)} />
           ))}
         </div>
       )}

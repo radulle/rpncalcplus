@@ -1,6 +1,7 @@
 const separator = (1.1).toLocaleString().substring(1, 2)
 
-export default class SplitNum {
+/** Class that handles specifics of calculator number formatting, partial inputs, errors, etc. */
+export class CalculatorNumber {
   private string: string
 
   constructor(string: string) {

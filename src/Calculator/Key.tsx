@@ -1,7 +1,7 @@
 import * as React from "react"
+import { classNames } from "."
+import { KeyInterface } from "../types"
 import { useContext } from "./Context"
-import { KeyInterface } from "./types"
-import { classNames } from "./utils"
 
 const map = (kbd: string) => {
   switch (kbd) {
@@ -28,7 +28,7 @@ const map = (kbd: string) => {
   }
 }
 
-export default function Key({
+export function Key({
   color,
   title,
   kbd,

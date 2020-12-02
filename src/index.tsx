@@ -1,9 +1,7 @@
 import * as React from "react"
 import ReactDOM from "react-dom"
-import Calculator from "./Calculator"
-import ErrorBoundary from "./ErrorBoundary"
+import { Calculator, ErrorBoundary, handleWindowSize } from "./Calculator"
 import "./scss/index.scss"
-import { handleWindowSize } from "./utils"
 
 handleWindowSize()
 

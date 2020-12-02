@@ -1,7 +1,6 @@
 import * as React from "react"
-import { KeyInterface } from "./types"
-import useModifiers from "./useModifiers"
-import useNote from "./useNote"
+import { KeyInterface } from "../types"
+import { useModifiers, useNote } from "../useCalculator"
 
 type Context = {
   key?: string

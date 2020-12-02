@@ -1,13 +1,13 @@
-import * as React from "react";
-import { NoteProps } from "./types";
-import { classNames } from "./utils";
+import * as React from "react"
+import { classNames } from "."
+import { NoteProps } from "../types"
 
-export default function Note({
+export function Note({
   handleNote,
-  note
+  note,
 }: {
-  note?: NoteProps;
-  handleNote: (note?: NoteProps) => () => void;
+  note?: NoteProps
+  handleNote: (note?: NoteProps) => () => void
 }) {
   return !!note ? (
     <div className="info">
@@ -23,5 +23,5 @@ export default function Note({
         </button>
       </div>
     </div>
-  ) : null;
+  ) : null
 }

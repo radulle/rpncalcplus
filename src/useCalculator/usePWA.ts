@@ -1,6 +1,6 @@
 import * as React from "react"
-import { NoteProps } from "./types"
-import * as serviceWorker from "./serviceWorker"
+import * as serviceWorker from "../serviceWorker"
+import { NoteProps } from "../types"
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: Array<string>
@@ -14,7 +14,7 @@ interface BeforeInstallPromptEvent extends Event {
 let deferredPrompt: BeforeInstallPromptEvent | undefined
 
 /** registers service worker and handles install and update events */
-export default function usePWA(
+export function usePWA(
   handleNote: (note?: NoteProps | undefined) => () => void
 ) {
   React.useEffect(() => {
@@ -65,6 +65,7 @@ export default function usePWA(
       })()
     }
 
+    // register service worker and handle install prompt
     serviceWorker.register({ onSuccess, onUpdate })
     window.addEventListener("beforeinstallprompt", prompt)
     return () => {

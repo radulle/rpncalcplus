@@ -1,9 +1,9 @@
 import * as React from "react"
+import { classNames } from "."
 import { useContext } from "./Context"
-import Key from "./Key"
-import { classNames } from "./utils"
+import { Key } from "./Key"
 
-export default function Header() {
+export function Header() {
   const { mod, toggleMod } = useContext()
   const handleHist = () => {
     toggleMod("hist")()

@@ -1,7 +1,8 @@
 import * as React from "react"
-import { KeyInterface } from "./types"
+import { KeyInterface } from "../types"
 
-export default function useKeyboard(
+/** Handles physical keyboard */
+export function useKeyboard(
   keys: KeyInterface[],
   mod: Set<string>,
   toggleMod: (key: string, set?: boolean) => () => void

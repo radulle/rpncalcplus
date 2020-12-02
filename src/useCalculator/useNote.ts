@@ -1,9 +1,10 @@
 import * as React from "react"
-import { NoteProps } from "./types"
+import { NoteProps } from "../types"
 
 let timeout: ReturnType<typeof setTimeout>
 
-export default function useNote() {
+/** Handles notes */
+export function useNote() {
   const [note, setNote] = React.useState<NoteProps | undefined>()
 
   const handleNote = (note?: NoteProps) => () => {

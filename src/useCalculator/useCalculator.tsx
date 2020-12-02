@@ -1,15 +1,17 @@
 import * as React from "react"
-import { calc } from "./calc"
-import SplitNum from "./SplitNum"
-import { KeyInterface, NoteProps } from "./types"
-import { readCommands, writeCommands } from "./utils"
+import { CalculatorNumber } from "../CalculatorNumber"
+import { KeyInterface } from "../types"
+import { calculator } from "./calculator"
+import { useKeyboard } from "./useKeyboard"
+import { useModifiers } from "./useModifiers"
+import { useNote } from "./useNote"
+import { usePWA } from "./usePWA"
 
-export default function useCalculator(
-  mod: Set<string>,
-  toggleMod: (key: string, set?: boolean) => () => void,
-  handleNote: (note?: NoteProps) => () => void
-) {
+export function useCalculator() {
   const [commands, setCommands] = React.useState<string[]>(readCommands)
+  const { mod, toggleMod } = useModifiers()
+  const { note, handleNote } = useNote()
+  usePWA(handleNote)
 
   React.useEffect(() => writeCommands(commands))
 
@@ -17,7 +19,7 @@ export default function useCalculator(
     setCommands((prev) => prev.slice(undefined, i + 1))
 
   const handleOperation = (e: string, minStack: number) => () => {
-    if (!!minStack && calc(commands).length < minStack) {
+    if (!!minStack && calculator(commands).length < minStack) {
       handleNote({
         action: `This operation requires at least ${minStack} argument${
           minStack > 1 ? "s" : ""
@@ -35,7 +37,7 @@ export default function useCalculator(
     setCommands((prev) => {
       const length = prev.length
       if (!length) return [e.toString()]
-      const current = new SplitNum(prev[length - 1])
+      const current = new CalculatorNumber(prev[length - 1])
       if (!current.isNumber) return [...prev, e.toString()]
       if (e === 0 && current.mantissa === "0") return prev
       if (current.mantissa === "0") return [...prev.slice(0, -1), e.toString()]
@@ -91,7 +93,7 @@ export default function useCalculator(
     setCommands((prev) => {
       const length = prev.length
       if (!length) return prev
-      const current = new SplitNum(prev[length - 1])
+      const current = new CalculatorNumber(prev[length - 1])
       if (!current.isNumber) return [...prev, "neg"]
       return [...prev.slice(0, -1), current.toggleSign()]
     })
@@ -531,12 +533,31 @@ export default function useCalculator(
     },
   ]
 
-  const stack = calc(commands)
+  const stack = calculator(commands)
+
+  const key = useKeyboard(keys, mod, toggleMod)
 
   return {
+    key,
+    keys,
     stack,
     commands,
     slice,
-    keys,
+    mod,
+    toggleMod,
+    note,
+    handleNote,
   }
+}
+
+function readCommands() {
+  const storage = localStorage.getItem("commands")
+  if (storage !== null) {
+    return JSON.parse(storage)
+  }
+  return ["0"]
+}
+
+function writeCommands(commands: string[]) {
+  localStorage.setItem("commands", JSON.stringify(commands))
 }

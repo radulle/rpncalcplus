@@ -13,7 +13,8 @@ const TEN = new Decimal(10)
 const TRIGMIN = new Decimal(1e-16)
 const TRIGMAX = new Decimal(7e14)
 
-export function calc(commands: string[]): string[] {
+//** Crunches command stack into result stack */
+export function calculator(commands: string[]): string[] {
   return commands.reduce((acc: string[], cur, i, arr) => {
     if (!isNaN(parseFloat(cur)) || cur === ".") {
       if (arr[i - 1] === "enter") return [...acc.slice(0, -1), cur]
@@ -35,7 +36,11 @@ function operator(stack: Array<string>, o: string) {
   const last = (i: number) => new Decimal(stack[length - i])
   const toStr = (num: Decimal) => num.toString()
   const trig = (num: Decimal) =>
-    num.abs().lessThan(TRIGMIN) ? ZERO : num.abs().greaterThan(TRIGMAX) ? ONE : num
+    num.abs().lessThan(TRIGMIN)
+      ? ZERO
+      : num.abs().greaterThan(TRIGMAX)
+      ? ONE
+      : num
   switch (o) {
     case "drop":
       return stack.slice(0, -1)

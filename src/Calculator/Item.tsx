@@ -1,7 +1,13 @@
 import * as React from "react"
-import SplitNum from "./SplitNum"
+import { CalculatorNumber } from "../CalculatorNumber"
 
-export default function Item({ num, onClick }: { num: SplitNum, onClick?: () => void }) {
+export function Item({
+  num,
+  onClick,
+}: {
+  num: CalculatorNumber
+  onClick?: () => void
+}) {
   const { mantissa, exponent } = num.formatted
   const handleClick = () => {
     if (onClick) return onClick()

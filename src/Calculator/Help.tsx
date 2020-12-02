@@ -1,6 +1,6 @@
 import * as React from "react"
 
-export default function Help() {
+export function Help() {
   return (
     <div className="help">
       <p>

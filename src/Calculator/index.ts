@@ -2,18 +2,6 @@ export function classNames(arr: Array<string | undefined | boolean>) {
   return arr.filter((e) => !!e).join(" ")
 }
 
-export function readCommands() {
-  const storage = localStorage.getItem("commands")
-  if (storage !== null) {
-    return JSON.parse(storage)
-  }
-  return ["0"]
-}
-
-export function writeCommands(commands: string[]) {
-  localStorage.setItem("commands", JSON.stringify(commands))
-}
-
 export function handleWindowSize() {
   window.resizeTo(333, 555)
   function resize() {
@@ -23,3 +11,6 @@ export function handleWindowSize() {
   resize()
   window.addEventListener("resize", resize)
 }
+
+export { Calculator } from "./Calculator"
+export { ErrorBoundary } from "./ErrorBoundary"

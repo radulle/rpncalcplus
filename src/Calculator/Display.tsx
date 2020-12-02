@@ -1,11 +1,11 @@
 import * as React from "react"
 import { useContext } from "./Context"
-import Help from "./Help"
-import History from "./History"
-import Note from "./Note"
-import Stack from "./Stack"
+import { Help } from "./Help"
+import { History } from "./History"
+import { Note } from "./Note"
+import { Stack } from "./Stack"
 
-export default function Display({
+export function Display({
   commands,
   stack,
   slice,

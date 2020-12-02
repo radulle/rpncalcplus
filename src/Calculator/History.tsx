@@ -1,11 +1,11 @@
 import * as React from "react"
-import SplitNum from "./SplitNum"
-import Item from "./Item"
+import { CalculatorNumber } from "../CalculatorNumber"
 import { useContext } from "./Context"
+import { Item } from "./Item"
 
 let used = false
 
-export default function History({
+export function History({
   commands,
   slice,
 }: {
@@ -31,7 +31,7 @@ export default function History({
   return (
     <div className="stack history" ref={ref}>
       {commands.map((el, i) => {
-        const num = new SplitNum(el)
+        const num = new CalculatorNumber(el)
         if (!num.isNumber)
           return (
             <button key={i} className="command" onClick={goTo(i)}>

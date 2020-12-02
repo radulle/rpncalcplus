@@ -1,9 +1,9 @@
 import * as React from "react"
+import { classNames } from "."
 import { useContext } from "./Context"
-import Key from "./Key"
-import { classNames } from "./utils"
+import { Key } from "./Key"
 
-export default function Keyboard() {
+export function Keyboard() {
   const { mod, keys } = useContext()
   return (
     <div
