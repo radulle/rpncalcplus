@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useContext } from "./Context"
 import { Help } from "./Help"
 import { History } from "./History"

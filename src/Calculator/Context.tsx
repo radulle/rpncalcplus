@@ -1,17 +1,17 @@
-import * as React from "react"
+import { createContext, useContext as useReactContext } from "react"
 import { KeyInterface } from "../types"
 import { useModifiers, useNote } from "../useCalculator"
 
-type Context = {
+type ContextType = {
   key?: string
   keys: KeyInterface[]
 } & ReturnType<typeof useModifiers> &
   ReturnType<typeof useNote>
 
-export const Context = React.createContext<Context | null>(null)
+export const Context = createContext<ContextType | null>(null)
 
 export const useContext = () => {
-  const context = React.useContext(Context)
+  const context = useReactContext(Context)
   if (!context) throw new Error("useCalcContext must be used within provider")
   return context
 }

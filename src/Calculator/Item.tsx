@@ -1,4 +1,3 @@
-import * as React from "react"
 import { CalculatorNumber } from "../CalculatorNumber"
 
 export function Item({

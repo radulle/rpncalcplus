@@ -29,3 +29,5 @@ firebase.json
 .vscode
 push.sh
 debug.log
+
+.eslintcache

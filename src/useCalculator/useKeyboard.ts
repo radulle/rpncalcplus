@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useState } from "react"
 import { KeyInterface } from "../types"
 
 /** Handles physical keyboard */
@@ -7,7 +7,7 @@ export function useKeyboard(
   mod: Set<string>,
   toggleMod: (key: string, set?: boolean) => () => void
 ) {
-  const [key, setKey] = React.useState<string | undefined>(undefined)
+  const [key, setKey] = useState<string | undefined>(undefined)
 
   const handleKeyDown = (ev: KeyboardEvent) => {
     ev.preventDefault()
@@ -69,7 +69,7 @@ export function useKeyboard(
 
   const handleContextMenu = (ev: MouseEvent) => ev.preventDefault()
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown)
     document.addEventListener("keyup", handleKeyUp)
     document.addEventListener("contextmenu", handleContextMenu)

@@ -1,5 +1,3 @@
-import * as React from "react"
-
 export function Help() {
   return (
     <div className="help">

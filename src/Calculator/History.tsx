@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef } from "react"
 import { CalculatorNumber } from "../CalculatorNumber"
 import { useContext } from "./Context"
 import { Item } from "./Item"
@@ -12,13 +12,13 @@ export function History({
   commands: Array<string>
   slice: (i: number) => void
 }) {
-  const ref = React.useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const { toggleMod, handleNote } = useContext()
   const goTo = (i: number) => () => {
     slice(i)
     toggleMod("hist", false)()
   }
-  React.useEffect(() => {
+  useEffect(() => {
     if (ref.current) ref.current.scrollTop = Number.MAX_SAFE_INTEGER
     if (!used) {
       handleNote({

@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useCalculator } from "../useCalculator"
 import { Context } from "./Context"
 import { Display } from "./Display"

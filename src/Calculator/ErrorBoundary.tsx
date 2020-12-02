@@ -1,11 +1,11 @@
-import * as React from "react"
+import { Component } from "react"
 
 function logError(error: Error, info: React.ErrorInfo) {
   console.info(error, info)
 }
 type ErrorState = { hasError: boolean; error?: Error }
 
-export class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends Component {
   state: ErrorState = { hasError: false }
 
   static getDerivedStateFromError(error: Error) {

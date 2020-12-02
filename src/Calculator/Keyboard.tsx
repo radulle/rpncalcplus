@@ -1,4 +1,3 @@
-import * as React from "react"
 import { classNames } from "."
 import { useContext } from "./Context"
 import { Key } from "./Key"

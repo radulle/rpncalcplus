@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useState } from "react"
 import { CalculatorNumber } from "../CalculatorNumber"
 import { KeyInterface } from "../types"
 import { calculator } from "./calculator"
@@ -8,12 +8,12 @@ import { useNote } from "./useNote"
 import { usePWA } from "./usePWA"
 
 export function useCalculator() {
-  const [commands, setCommands] = React.useState<string[]>(readCommands)
+  const [commands, setCommands] = useState<string[]>(readCommands)
   const { mod, toggleMod } = useModifiers()
   const { note, handleNote } = useNote()
   usePWA(handleNote)
 
-  React.useEffect(() => writeCommands(commands))
+  useEffect(() => writeCommands(commands))
 
   const slice = (i: number) =>
     setCommands((prev) => prev.slice(undefined, i + 1))
